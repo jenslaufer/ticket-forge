@@ -51,6 +51,10 @@ Every adapter MUST honour:
 - **jira** — needs `JIRA_BASE_URL`, `JIRA_EMAIL`, `JIRA_API_TOKEN`, `JIRA_PROJECT_KEY`. Maps to
   `POST /rest/api/3/issue` (summary, issuetype, ADF description, priority, labels) via `fetch`;
   dedupes via JQL search.
+- **gitlab** — needs `GITLAB_TOKEN`, `GITLAB_PROJECT` (path or numeric id); optional
+  `GITLAB_BASE_URL` (default `https://gitlab.com`). Maps to `POST /api/v4/projects/:id/issues`
+  (title, markdown description, comma-joined labels) via `fetch`; dedupes via the real-time
+  project issues list (`in=title`).
 
 ## Field mapping cheat-sheet
 

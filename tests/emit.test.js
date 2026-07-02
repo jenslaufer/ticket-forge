@@ -24,10 +24,10 @@ function run(args, { input = TICKET, env = {} } = {}) {
     { input, encoding: 'utf8', env: { ...process.env, ...env } });
 }
 
-test('--list names the three bundled providers', () => {
+test('--list names the bundled providers', () => {
   const r = run(['--list'], { input: '' });
   assert.equal(r.status, 0);
-  assert.deepEqual(r.stdout.trim().split('\n'), ['github', 'jira', 'markdown']);
+  assert.deepEqual(r.stdout.trim().split('\n'), ['github', 'gitlab', 'jira', 'markdown']);
 });
 
 test('markdown: default prints the rendered ticket', () => {
@@ -66,6 +66,25 @@ test('jira: --dry-run previews the REST payload with type/priority mapping', () 
   assert.equal(payload.fields.issuetype.name, 'Story');
   assert.equal(payload.fields.priority.name, 'Medium');
   assert.equal(payload.fields.description.type, 'doc');
+});
+
+test('gitlab: --dry-run previews the REST payload with markdown description', () => {
+  const r = run(['--provider', 'gitlab', '--dry-run'],
+    { env: { GITLAB_BASE_URL: 'https://git.example.com', GITLAB_PROJECT: 'group/repo' } });
+  assert.equal(r.status, 0);
+  assert.ok(r.stdout.includes(
+    '[gitlab dry-run] POST https://git.example.com/api/v4/projects/group%2Frepo/issues'));
+  const payload = JSON.parse(r.stdout.split('\n').slice(1).join('\n'));
+  assert.equal(payload.title, 'Add CSV export to the report page');
+  assert.equal(payload.labels, 'type:feature,priority:med,reports');
+  assert.ok(payload.description.includes('## Acceptance criteria'));
+});
+
+test('fails closed: gitlab without config names the missing variable', () => {
+  const env = { GITLAB_TOKEN: '', GITLAB_PROJECT: '', GITLAB_BASE_URL: '' };
+  const r = run(['--provider', 'gitlab'], { env });
+  assert.equal(r.status, 1);
+  assert.match(r.stderr, /GITLAB_TOKEN not set/);
 });
 
 test('fails closed: unknown provider', () => {

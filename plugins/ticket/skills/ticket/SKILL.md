@@ -20,7 +20,7 @@ Parse these from the user's request / `$ARGUMENTS`; everything else is the ticke
 
 | Flag | Meaning |
 |---|---|
-| `--provider <name>` | Target system: `markdown` (default), `github`, `jira` |
+| `--provider <name>` | Target system: `markdown` (default), `github`, `jira`, `gitlab` |
 | `--repo OWNER/NAME` | GitHub target repo (github provider only) |
 | `--out FILE` | Write the markdown ticket to FILE (markdown provider only) |
 | `--dry-run` | Render the exact payload/command, write nothing external |
@@ -79,6 +79,7 @@ provider yourself. If no system is mentioned, use `markdown` and say so.
 | `markdown` | nothing |
 | `github` | authenticated `gh` CLI (`gh auth status`) |
 | `jira` | env: `JIRA_BASE_URL`, `JIRA_EMAIL`, `JIRA_API_TOKEN`, `JIRA_PROJECT_KEY` |
+| `gitlab` | env: `GITLAB_TOKEN`, `GITLAB_PROJECT`; optional `GITLAB_BASE_URL` |
 
 If a provider fails on missing config, relay the adapter's error and tell the user exactly which
 variable or login is missing. Never invent credentials; never echo secrets.
