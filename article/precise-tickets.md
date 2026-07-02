@@ -40,6 +40,50 @@ Precision is not length. A precise ticket answers a fixed set of questions and s
 Nothing exotic. Teams have known this for decades. The difference is that the cost of skipping it
 used to be a follow-up question. Now it's a wrong pull request.
 
+## Two lines in, a ticket out
+
+Here's what that looks like in practice. The input is the kind of sentence product people actually
+say:
+
+```
+/ticket users should be able to delete their own account
+```
+
+The output — generated, not hand-polished:
+
+> # Let users delete their own account
+>
+> `feature` · priority: `high` · `account` `gdpr` · estimate: 2-3 days
+>
+> **Context** — Users who want to leave have to email support and wait. That frustrates the user,
+> creates support load, and is a GDPR risk: deletion requests must be honored without undue delay.
+>
+> **Scope** — "Delete account" action in account settings, behind a confirmation step · hard-delete
+> of profile and personal data; anonymize rows other users depend on · confirmation email after
+> deletion.
+>
+> **Out of scope** — Data export before deletion (separate ticket) · admin-initiated deletion ·
+> soft-delete / grace-period restore.
+>
+> **Acceptance criteria**
+> - [ ] Given a signed-in user in account settings, when they confirm account deletion, then they
+>   are signed out and can no longer log in
+> - [ ] Given a deleted account, when its data is looked up in the database, then personal data is
+>   gone and shared records are anonymized
+> - [ ] Given a deletion request, when it completes, then a confirmation email is sent to the
+>   account's address
+>
+> **Verification**
+> - [ ] Automated test: delete account → login rejected, personal rows gone, shared rows anonymized
+> - [ ] Manual: confirmation email arrives; support inbox receives nothing
+
+Look at the out-of-scope list. That's where the three-day rabbit holes live — the data export
+someone "quickly" adds, the soft-delete debate. They're named and excluded before anyone burns a
+day on them.
+
+This is the ticket I wish someone had handed me back when I was the developer on the other side of
+"add delete account".
+
 ## Separate the precision from the plumbing
 
 There's a second trap: coupling the thinking to the tool. Ticket quality advice always seems to come
@@ -86,3 +130,5 @@ documented and small.
 The agents will keep getting better at writing code. The scarce skill is now upstream: saying what
 you want, precisely enough that it survives execution. That was always the job. Now it's the whole
 job.
+
+Want the plugin? Drop **ticket-forge** in the comments and I'll send you the link.
