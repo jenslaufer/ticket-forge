@@ -57,7 +57,7 @@ codex plugin add ticket@jenslaufer
 - Default provider is `markdown` (no configuration, prints/writes the ticket).
 - `--dry-run` shows the exact payload without writing anything external.
 - `--critic` runs the ticket through a mechanical 10-metric quality rubric and fixes what fails.
-- External writes (GitHub/Jira) are always previewed before filing.
+- External writes (GitHub/Jira/GitLab) are always previewed before filing.
 
 ## Provider configuration
 
@@ -74,7 +74,7 @@ Token sources: GitHub — `gh auth login`; Jira — [API token](https://id.atlas
 (`JIRA_BASE_URL` = `https://<site>.atlassian.net`, `JIRA_PROJECT_KEY` = the `ABC` in `ABC-123`);
 GitLab — personal access token with `api` scope (`GITLAB_PROJECT` = `group/repo`).
 
-Then verify without creating anything:
+Then verify without creating anything (path relative to this plugin directory):
 
 ```
 node skills/ticket/scripts/ticket_emit.js --check --provider jira
@@ -128,7 +128,8 @@ The generated adapter needs no registration: the dispatcher picks it up by filen
 ## Requirements
 
 - Node.js >= 18 on PATH (built-ins only — no npm installs). Without Node, the skill degrades
-  gracefully: markdown and GitHub still work (model-rendered / via `gh`); only Jira needs Node.
+  gracefully: markdown and GitHub still work (model-rendered / via `gh`); only the REST
+  providers (Jira, GitLab) require Node.
 - Works on Linux, macOS, and Windows
 
 ## License

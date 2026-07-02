@@ -53,9 +53,9 @@ provider yourself. If no system is mentioned, use `markdown` and say so.
      feedback honestly).
    - Show the user the final score table.
 
-4. **Preview before external writes.** For `github` and `jira` without an explicit `--dry-run`:
-   run the emitter **with** `--dry-run` first, show the user the exact payload, and get their go-ahead
-   before the real write. `markdown` needs no confirmation.
+4. **Preview before external writes.** For every external provider (`github`, `jira`, `gitlab`)
+   without an explicit `--dry-run`: run the emitter **with** `--dry-run` first, show the user the
+   exact payload, and get their go-ahead before the real write. `markdown` needs no confirmation.
 
 5. **Emit.** Save the model to a temp file, then:
 
@@ -71,10 +71,13 @@ provider yourself. If no system is mentioned, use `markdown` and say so.
    **If `node` is not on PATH** ("command not found"), degrade gracefully instead of stopping:
    - `markdown`: render the ticket yourself, strictly following the template in
      `references/ticket-model.md` and the section order used by `scripts/lib/render.js`.
-   - `github`: search for a duplicate (`gh issue list --search "<title> in:title" --state open`),
-     then build the `gh issue create` call yourself: `--title`, body via `--body-file` (write the
-     rendered body to a temp file), `--label type:<t>`, `--label priority:<p>`, one `--label` per label.
-   - `jira`: requires Node — tell the user plainly that the Jira provider needs Node.js >= 18.
+   - `github`: check for a duplicate first via the real-time list endpoint, not search
+     (`gh issue list --state open --limit 100 --json number,title` — GitHub's search index lags
+     just-created issues), then build the `gh issue create` call yourself: `--title`, body via
+     `--body-file` (write the rendered body to a temp file), `--label type:<t>`,
+     `--label priority:<p>`, one `--label` per label.
+   - `jira`, `gitlab`: require Node — tell the user plainly that the REST providers need
+     Node.js >= 18.
 
 6. **Report.** Show the ticket (or its URL), the provider used, and any assumptions you made
    (inferred type/priority, chosen provider).

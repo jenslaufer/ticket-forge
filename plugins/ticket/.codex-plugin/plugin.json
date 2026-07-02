@@ -1,6 +1,6 @@
 {
   "name": "ticket",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Turn a rough idea into a precise, well-scoped ticket and file it into a real ticketing system (GitHub Issues, Jira, GitLab, or plain Markdown) through a pluggable provider layer.",
   "author": {
     "name": "Jens Laufer"
