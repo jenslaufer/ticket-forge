@@ -15,20 +15,6 @@
       "source": "./plugins/ticket",
       "category": "development",
       "homepage": "https://github.com/jenslaufer/ticket-forge"
-    },
-    {
-      "name": "extension-forge",
-      "description": "Research, channel-eval and test-first MV3 build for Chrome extensions (WXT + Vue 3 + Tailwind v4, ExtPay, design gate). Use when validating an extension idea, planning its marketing channels, or building/shipping an extension.",
-      "author": {
-        "name": "Jens Laufer"
-      },
-      "source": {
-        "source": "github",
-        "repo": "jenslaufer/extension-forge",
-        "ref": "v0.1.0"
-      },
-      "category": "development",
-      "homepage": "https://github.com/jenslaufer/extension-forge"
     }
   ]
 }
